@@ -21,7 +21,7 @@ namespace D7045E
 
 		m_ImGuiLayer->OnAttach();
 
-		Renderer::CreateRenderer("shaders/simple_shader.vert", "shaders/simple_shader.frag");
+		Renderer::CreateRenderer(std::string(ROOT_PATH)+"/shaders/simple_shader.vert", std::string(ROOT_PATH)+"/shaders/simple_shader.frag");
 	}
 
 	void Application::OnEvent(Event& event)

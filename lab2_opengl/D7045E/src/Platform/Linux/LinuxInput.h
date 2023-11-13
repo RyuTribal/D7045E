@@ -3,7 +3,7 @@
 
 namespace D7045E
 {
-	class WindowsInput : public Input
+	class LinuxInput : public Input
 	{
 	protected:
 		bool IsKeyPressedImpl(int keycode) override;

@@ -1,3 +1,6 @@
+
+local rootPath = path.getabsolute(".")
+
 workspace "D7045E"
     architecture "x64"
     startproject "D7045E"
@@ -45,6 +48,11 @@ project "D7045E"
         "%{prj.name}/vendor/glm/glm/**.inl"
     }
 
+    removefiles
+    {
+        "%{prj.name}/src/Platform/**"
+    }
+
     libdirs
     {
         "%{prj.name}/vendor/GLFW/lib-vc2022",
@@ -55,12 +63,12 @@ project "D7045E"
         "GLFW",
         "Glad",
         "ImGui",
-        "opengl32.lib"
     }
 
     defines
     {
-        "_CRT_SECURE_NO_WARNINGS"
+        "_CRT_SECURE_NO_WARNINGS",
+        "ROOT_PATH=\"" .. rootPath .. "/" .. "%{prj.name}\""
     }
 
     includedirs
@@ -81,9 +89,38 @@ project "D7045E"
             "BUILD_DLL",
             "GLFW_INCLUDE_NONE"
         }
+        
+        links 
+        {
+            "opengl32.lib"
+        }
+
+        files
+        {
+            "%{prj.name}/src/Platform/Windows/**.cpp",
+            "%{prj.name}/src/Platform/Windows/**.h",
+        }
+    filter "system:linux"
+        systemversion "latest"
+        defines
+        {
+            "PLATFORM_LINUX",
+            "BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
+        }
+
+        links
+        {
+            "GL"
+        }
+        files
+        {
+            "%{prj.name}/src/Platform/Linux/**.cpp",
+            "%{prj.name}/src/Platform/Linux/**.h",
+        }
 
     filter "configurations:Debug"
-        defines { "DEBUG" }
+        defines "DEBUG"
         runtime "Debug"
         symbols "on"
 

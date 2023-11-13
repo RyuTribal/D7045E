@@ -70,6 +70,7 @@ namespace D7045E
     {
         // Here goes the triangle algorithm
 
+        
 
     }
 

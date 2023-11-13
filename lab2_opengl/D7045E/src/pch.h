@@ -1,10 +1,10 @@
 #pragma once
 
 #ifdef PLATFORM_WINDOWS
-	#ifndef NOMINMAX
-		// See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
-		#define NOMINMAX
-	#endif
+#ifndef NOMINMAX
+// See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
+#define NOMINMAX
+#endif
 #endif
 
 #include <iostream>
@@ -16,7 +16,6 @@
 #include <stdexcept>
 #include <limits>
 #include <fstream>
-
 
 #include <string>
 #include <sstream>
@@ -37,5 +36,5 @@
 #include "Core.h"
 
 #ifdef PLATFORM_WINDOWS
-	#include <Windows.h>
+#include <Windows.h>
 #endif
