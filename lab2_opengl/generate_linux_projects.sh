@@ -35,7 +35,7 @@ cat > "$PROJECT_ROOT/.vscode/launch.json" << EOF
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "\${workspaceFolder}/bin/Debug-linux-x86_64/D7045E/D7045E",
+            "program": "\${workspaceFolder}/bin/Debug-linux-x86_64/App/App",
             "args": [],
             "stopAtEntry": false,
             "cwd": "\${workspaceFolder}",
@@ -62,7 +62,8 @@ cat > $PROJECT_ROOT/.vscode/c_cpp_properties.json << EOF
         {
             "name": "Linux",
             "includePath": [
-                "\${workspaceFolder}/D7045E/**",
+                "\${workspaceFolder}/Engine/**",
+                "\${workspaceFolder}/App/**",
             ],
             "defines": [
                 "DEBUG",
