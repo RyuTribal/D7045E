@@ -25,6 +25,7 @@
 #include <unordered_set>
 #include <set>
 #include <array>
+#include <stack>
 
 #include <chrono>
 #include <future>
@@ -35,6 +36,7 @@
 #include "Utils/Sort.h"
 #include "Utils/DataStructures.h"
 #include "Utils/Algorithms.h"
+#include "Utils/Paths.h"
 
 #include "Core.h"
 
