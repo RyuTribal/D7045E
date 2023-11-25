@@ -2,13 +2,16 @@
 #include <Core/EntryPoint.h>
 
 #include "RandomObjectsLayer.h"
+#include "MovableObjectLayer.h"
 
 class App : public Engine::Application
 {
 public:
-	App()
+	App(Engine::WindowProps props) : Application(props)
 	{
+		Engine::Renderer::Get()->SetBackgroundColor(128, 128, 128);
 		PushLayer(new Lab3::RandomObjectsLayer());
+		PushLayer(new Lab3::MovableObjectLayer());
 	}
 
 	~App()
@@ -19,5 +22,9 @@ public:
 
 Engine::Application* Engine::CreateApplication()
 {
-	return new App();
+	WindowProps props{};
+	props.Title = "Lab3";
+	props.Width = 1280;
+	props.Height = 720;
+	return new App(props);
 }

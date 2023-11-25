@@ -1,21 +1,19 @@
 #include "pch.h"
+#include "Core.h"
 #include "Application.h"
 
-#include "Renderer.h"
-#include "glad/gl.h"
+#include "Renderer/Renderer.h"
 
 namespace Engine
 {
 	Application* Application::s_Instance = nullptr;
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
-	Application::Application()
+	Application::Application(WindowProps props)
 	{
 		CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
-		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window = std::unique_ptr<Window>(Window::Create(props));
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::CreateRenderer();
 
@@ -27,7 +25,7 @@ namespace Engine
 	void Application::OnEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
@@ -64,10 +62,14 @@ namespace Engine
 			float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - last_frame).count();
 			last_frame = newTime;
 
+			Renderer::Get()->BeginFrame();
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate(frameTime);
 			}
+			Renderer::Get()->EndFrame();
+
+
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 			{

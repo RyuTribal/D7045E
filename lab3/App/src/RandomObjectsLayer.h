@@ -14,6 +14,9 @@ namespace Lab3 {
 
 	private:
 		std::vector<Engine::Ref<Engine::GraphicsNode>> objects;
-		int BG[3] = { 128, 128, 128 };
+
+		bool isOrthographic = false;
+
+		const int random_object_count = 7;
 	};
 }

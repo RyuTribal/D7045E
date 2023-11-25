@@ -9,7 +9,7 @@ namespace Engine
 	class Application
 	{
 	public:
-		Application();
+		Application(WindowProps props = WindowProps());
 		virtual ~Application();
 
 		void run();

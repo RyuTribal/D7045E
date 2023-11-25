@@ -42,4 +42,6 @@
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
+#undef near
+#undef far
 #endif
