@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "DebugLines.h";
+#include "DebugLines.h"
 
 namespace Engine {
 	DebugLines::DebugLines()
 	{
-		m_Program = CreateRef<ShaderProgram>(std::string(ROOT_PATH) + "/shaders/line_shader");
+		std::string path = std::string(ROOT_PATH) + "/shaders/line_shader";
+		m_Program = CreateRef<ShaderProgram>(path);
 	}
 	void DebugLines::ApplyMaterial()
 	{

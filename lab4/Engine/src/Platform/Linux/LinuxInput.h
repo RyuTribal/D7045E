@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Input.h"
 
-namespace D7045E
+namespace Engine
 {
 	class LinuxInput : public Input
 	{

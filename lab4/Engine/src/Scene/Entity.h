@@ -22,21 +22,21 @@ namespace Engine {
 		template<typename Type>
 		void AddComponent(Type component) {
 			if (m_Scene != nullptr) {
-				m_Scene->GetRegistry()->Add<Type>(m_ID, component);
+				m_Scene->GetRegistry()->Add<Type>(m_Handle.GetID(), component);
 			}
 		}
 
 		template<typename Type>
 		void RemoveComponent() {
 			if (m_Scene != nullptr) {
-				m_Scene->GetRegistry()->Remove<Type>(m_ID);
+				m_Scene->GetRegistry()->Remove<Type>(m_Handle.GetID());
 			}
 		}
 
 		template<typename Type>
 		Type* GetComponent() {
 			if (m_Scene != nullptr) {
-				return m_Scene->GetRegistry()->Get<Type>(m_ID);
+				return m_Scene->GetRegistry()->Get<Type>(m_Handle.GetID());
 			}
 			return nullptr;
 		}
@@ -44,7 +44,7 @@ namespace Engine {
 		template<typename Type>
 		bool HasComponent() {
 			if (m_Scene != nullptr) {
-				return m_Scene->GetRegistry()->Get<Type>(m_ID) != nullptr ? true : false;
+				return m_Scene->GetRegistry()->Get<Type>(m_Handle.GetID()) != nullptr ? true : false;
 			}
 			return false;
 		}

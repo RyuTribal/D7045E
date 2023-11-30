@@ -67,9 +67,10 @@ cat > $PROJECT_ROOT/.vscode/c_cpp_properties.json << EOF
             ],
             "defines": [
                 "DEBUG",
-                "UNICODE"
+                "UNICODE",
+                "PLATFORM_LINUX"
             ],
-            "compilerPath": "/usr/bin/gcc",  # Specify the compiler path
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "\${default}"

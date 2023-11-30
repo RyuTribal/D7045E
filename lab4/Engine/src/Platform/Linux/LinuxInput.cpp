@@ -4,7 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace D7045E
+namespace Engine
 {
 	Input *Input::s_Instance = new LinuxInput();
 
@@ -19,7 +19,8 @@ namespace D7045E
 	void LinuxInput::SetLockMouseModeImpl(bool lock_mouse)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		lock_mouse ? glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN) : glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetCursorPos(window, Application::Get().GetWindow().GetWidth() / 2, Application::Get().GetWindow().GetHeight() / 2);
+		lock_mouse ? glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED) : glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
 	bool LinuxInput::IsMouseButtonPressedImpl(int button)

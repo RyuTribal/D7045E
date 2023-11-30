@@ -1,6 +1,7 @@
 #pragma once
 #include "Registry.h"
 #include "Renderer/Camera.h"
+#include "EntityHandle.h"
 
 namespace Engine {
 
@@ -55,7 +56,8 @@ namespace Engine {
 
 	class Scene {
 	public:
-		static Ref<Entity> CreateScene(std::string name = "A scene");
+		static std::pair<Ref<Entity>, Ref<Scene>> CreateScene(std::string name = "A scene");
+		Scene(std::string name);
 		~Scene();
 
 		Registry* GetRegistry() { return &m_Registry; }
@@ -63,7 +65,7 @@ namespace Engine {
 		Ref<Entity> CreateEntity(std::string name, Entity* parent);
 		void DestroyEntity(UUID id);
 
-		Camera* GetCurrentCamera() { return m_Registry.Get<CameraComponent>(m_CurrentCamera)->camera.get(); }
+		Camera* GetCurrentCamera();
 
 		void SetCurrentCamera(UUID camera_entity_id) { m_CurrentCamera = camera_entity_id; }
 
@@ -78,7 +80,6 @@ namespace Engine {
 		EntityHandle* GetEntity(UUID id) { return entities[id]; }
 
 	private:
-		Scene(EntityHandle* camera_handle, std::string name);
 		void UpdateWorldTransform(SceneNode* node, glm::mat4& parentWorldTransform);
 		void UpdateTransforms();
 
@@ -88,7 +89,7 @@ namespace Engine {
 	private:
 		UUID m_ID = UUID();
 
-		UUID m_CurrentCamera;
+		UUID m_CurrentCamera = UUID();
 
 		std::string m_Name;
 

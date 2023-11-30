@@ -121,6 +121,8 @@ project "Engine"
             "%{prj.name}/src/Platform/Linux/**.h",
         }
 
+        buildoptions { "-msse2" }
+
     filter "configurations:Debug"
         defines "DEBUG"
         runtime "Debug"
@@ -165,7 +167,9 @@ project "App"
     links
     {
         "Engine",
-        "Glad"
+        "GLFW",
+        "Glad",
+        "ImGui",
     }
 
     defines
@@ -195,6 +199,8 @@ project "App"
         {
             "GL"
         }
+
+        buildoptions { "-msse2" }
 
     filter "configurations:Debug"
         defines "DEBUG"

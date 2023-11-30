@@ -7,17 +7,23 @@
 
 namespace Engine {
 
-	Ref<Entity> Scene::CreateScene(std::string name)
+	std::pair<Ref<Entity>, Ref<Scene>> Scene::CreateScene(std::string name)
 	{
-		UUID new_id = UUID();
-		return Entity();
+		Ref<Scene> scene = CreateRef<Scene>(name);
+		Ref<Entity> default_camera_entity = scene->CreateEntity("Default scene camera", nullptr);
+		scene->SetCurrentCamera(default_camera_entity->GetID());
+		Ref<Camera> camera = CreateRef<Camera>(CameraType::PERSPECTIVE);
+		default_camera_entity->AddComponent<CameraComponent>(CameraComponent(camera));
+		glm::vec3 default_transform = glm::vec3(0.f, 0.f, 0.f);
+		default_camera_entity->AddComponent<LocalTransformComponent>(LocalTransformComponent(default_transform));
+
+		return {default_camera_entity, scene};
 	}
 
 
-	Scene::Scene(EntityHandle* camera_handle, std::string name)
-		: m_Name(name), m_CurrentCamera(camera_handle->GetID())
+	Scene::Scene(std::string name)
+		: m_Name(name)
 	{
-		entities[camera_handle->GetID()] = camera_handle;
 	}
 
 	Scene::~Scene() {
@@ -47,6 +53,9 @@ namespace Engine {
 		entities.erase(id);
 	}
 
+	Camera* Scene::GetCurrentCamera(){
+		return m_Registry.Get<CameraComponent>(m_CurrentCamera)->camera.get();
+	}
 	void Scene::UpdateScene(int delta_time)
 	{
 		UpdateTransforms();

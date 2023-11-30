@@ -6,7 +6,8 @@
 namespace Engine{
 	Monochrome::Monochrome(int red, int green, int blue) : r{ (float)red / 255.f }, g{ (float)green / 255.f }, b{ (float)blue / 255.f }
 	{
-		m_Program = CreateRef<ShaderProgram>(std::string(ROOT_PATH)+"/shaders/monochrome_shader");
+		std::string path = std::string(ROOT_PATH)+"/shaders/monochrome_shader";
+		m_Program = CreateRef<ShaderProgram>(path);
 	}
 	void Monochrome::ApplyMaterial()
 	{

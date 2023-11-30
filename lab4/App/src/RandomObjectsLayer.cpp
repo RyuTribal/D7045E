@@ -45,7 +45,8 @@ namespace Lab4 {
 				test_ent = new_entity;
 			}
 
-			Engine::LocalTransformComponent new_transform(glm::vec3(random_x, random_y, random_z));
+			glm::vec3 random_translation = glm::vec3(random_x, random_y, random_z);
+			Engine::LocalTransformComponent new_transform(random_translation);
 			new_transform.scale = glm::vec3(random_scale, random_scale, random_scale);
 			
 			new_entity->AddComponent<Engine::ObjectComponent>(new_mesh);

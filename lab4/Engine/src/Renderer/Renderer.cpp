@@ -2,8 +2,9 @@
 #include "Renderer.h"
 #include "Core/Application.h"
 
+#define STBI_NO_SIMD
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <stb_image.h>
 
 namespace Engine
 {

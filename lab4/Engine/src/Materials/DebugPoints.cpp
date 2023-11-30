@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "DebugPoints.h";
+#include "DebugPoints.h"
 
 namespace Engine {
 	DebugPoints::DebugPoints()
 	{
-		m_Program = CreateRef<ShaderProgram>(std::string(ROOT_PATH) + "/shaders/point_shader");
+		std::string path = std::string(ROOT_PATH) + "/shaders/point_shader";
+		m_Program = CreateRef<ShaderProgram>(path);
 	}
 	void DebugPoints::ApplyMaterial()
 	{

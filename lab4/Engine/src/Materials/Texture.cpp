@@ -5,7 +5,8 @@
 namespace Engine {
 	Texture::Texture(GLuint texture) : m_Texture{texture}
 	{
-		m_Program = CreateRef<ShaderProgram>(std::string(ROOT_PATH) + "/shaders/texture_shader");
+		std::string path = std::string(ROOT_PATH) + "/shaders/texture_shader";
+		m_Program = CreateRef<ShaderProgram>(path);
 	}
 	void Texture::ApplyMaterial()
 	{
