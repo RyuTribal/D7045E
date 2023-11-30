@@ -15,9 +15,7 @@ namespace Engine {
 	void Mesh::SetData(std::vector<Vertex>& vertices, std::vector<int> indices)
 	{
 		for (Vertex& vertex : vertices) {
-			Ref<Vertex> pointer_vertex = CreateRef<Vertex>(vertex.x, vertex.y, vertex.z);
-			pointer_vertex->SetColor(vertex.r, vertex.g, vertex.b);
-			pointer_vertex->SetOpacity(vertex.a);
+			Ref<Vertex> pointer_vertex = CreateRef<Vertex>(vertex.coordinates, vertex.color, vertex.texture_coordinates);
 			m_Vertices.push_back(pointer_vertex);
 		}
 
@@ -29,5 +27,6 @@ namespace Engine {
 		glCreateVertexArrays(1, &m_VertexArrayObject);
 		glCreateBuffers(1, &m_VertexBufferObject);
 		glCreateBuffers(1, &m_IndexBufferObject);
+
 	}
 }

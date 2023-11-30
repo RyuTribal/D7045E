@@ -17,15 +17,17 @@ namespace Engine {
         float half_height = h / 2.0f;
         float half_depth = d / 2.0f;
 
+        glm::vec4 base_color = { 1.f, 1.f, 1.f, 1.f }; // Just to give vertices a color
+
         std::vector<Vertex> vertices = {
-            Vertex(-half_width, -half_height, -half_depth),
-            Vertex(half_width, -half_height, -half_depth),
-            Vertex(half_width, half_height, -half_depth),
-            Vertex(-half_width, half_height, -half_depth),
-            Vertex(-half_width, -half_height, half_depth),
-            Vertex(half_width, -half_height, half_depth),
-            Vertex(half_width, half_height, half_depth),
-            Vertex(-half_width, half_height, half_depth)
+            Vertex({ -half_width, -half_height, -half_depth}, base_color, {0.f, 0.f}),
+            Vertex({half_width, -half_height, -half_depth}, base_color, {1.f, 0.f}),
+            Vertex({half_width, half_height, -half_depth}, base_color, {1.f, 1.f}),
+            Vertex({-half_width, half_height, -half_depth}, base_color, {0.f, 1.f}),
+            Vertex({-half_width, -half_height, half_depth}, base_color, {0.f, 0.f}),
+            Vertex({half_width, -half_height, half_depth}, base_color, {1.f, 0.f}),
+            Vertex({half_width, half_height, half_depth}, base_color, {1.f, 1.f}),
+            Vertex({-half_width, half_height, half_depth}, base_color, {0.f, 1.f})
         };
 
         SetData(vertices, indices);

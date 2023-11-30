@@ -14,7 +14,7 @@ namespace Engine
 
 		if (sort) {
 			Sort::MergeSortArray(vertices->begin(), vertices->end(), [](Engine::Ref<Engine::Vertex> a, Engine::Ref<Engine::Vertex> b) {
-				return a->x == b->x ? a->y < b->y : a->x < b->x;
+				return a->coordinates.x == b->coordinates.x ? a->coordinates.y < b->coordinates.y : a->coordinates.x < b->coordinates.x;
 				});
 		}
 
@@ -64,7 +64,7 @@ namespace Engine
 
 		 if (sort) {
 			 Sort::MergeSortArray(vertices->begin(), vertices->end(), [](Engine::Ref<Engine::Vertex> a, Engine::Ref<Engine::Vertex> b) {
-				 return a->x == b->x ? a->y < b->y : a->x < b->x;
+				 return a->coordinates.x == b->coordinates.x ? a->coordinates.y < b->coordinates.y : a->coordinates.x < b->coordinates.x;
 				 });
 		 }
 
@@ -122,17 +122,17 @@ namespace Engine
 
 		 // Find the bounding box
 		 for (const auto& vertex : vertices) {
-			 minX = std::min(minX, vertex->x);
-			 maxX = std::max(maxX, vertex->x);
-			 minY = std::min(minY, vertex->y);
-			 maxY = std::max(maxY, vertex->y);
-			 minZ = std::min(minZ, vertex->z);
-			 maxZ = std::max(maxZ, vertex->z);
+			 minX = std::min(minX, vertex->coordinates.x);
+			 maxX = std::max(maxX, vertex->coordinates.x);
+			 minY = std::min(minY, vertex->coordinates.y);
+			 maxY = std::max(maxY, vertex->coordinates.y);
+			 minZ = std::min(minZ, vertex->coordinates.z);
+			 maxZ = std::max(maxZ, vertex->coordinates.z);
 		 }
-		 p = Vertex((minX + maxX) / 2, (minY + maxY) / 2, (minZ + maxZ) / 2);
+		 p = Vertex({ (minX + maxX) / 2, (minY + maxY) / 2, (minZ + maxZ) / 2 });
 
-		 Vertex corner1(minX, minY, minZ);
-		 Vertex corner2(maxX, maxY, maxZ);
+		 Vertex corner1({ minX, minY, minZ });
+		 Vertex corner2({ maxX, maxY, maxZ });
 		 float maxDistance = Vertex::DistanceBetweenTwoVerts(p, corner1);
 
 		 maxDistance = std::max(maxDistance, Vertex::DistanceBetweenTwoVerts(p, corner2));

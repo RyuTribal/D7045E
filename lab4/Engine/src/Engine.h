@@ -13,6 +13,13 @@
 #include "Renderer/Renderer.h"
 #include "Primitives/Cuboid.h"
 #include "Materials/Monochrome.h"
+#include "Materials/Texture.h"
+
+
+// ---------------- Scene ----------------
+#include "Scene/Scene.h"
+#include "Scene/Entity.h"
+#include "Scene/Components.h"
 
 // ---------------- Utils ----------------
 #include "Utils/Log.h"

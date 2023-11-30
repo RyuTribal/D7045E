@@ -16,7 +16,7 @@ namespace Engine
 		// Helper functions
 		inline static float Cross(const Vertex* origin, const Vertex* A, const Vertex* B)
 		{
-			return (A->x - origin->x) * (B->y - origin->y) - (A->y - origin->y) * (B->x - origin->x);
+			return (A->coordinates.x - origin->coordinates.x) * (B->coordinates.y - origin->coordinates.y) - (A->coordinates.y - origin->coordinates.y) * (B->coordinates.x - origin->coordinates.x);
 		}
 	};
 }

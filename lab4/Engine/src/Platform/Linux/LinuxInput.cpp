@@ -15,6 +15,13 @@ namespace D7045E
 		auto state = glfwGetKey(window, keycode);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
+
+	void LinuxInput::SetLockMouseModeImpl(bool lock_mouse)
+	{
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		lock_mouse ? glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN) : glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+
 	bool LinuxInput::IsMouseButtonPressedImpl(int button)
 	{
 		auto window = static_cast<GLFWwindow *>(Application::Get().GetWindow().GetNativeWindow());

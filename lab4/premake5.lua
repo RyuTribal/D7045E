@@ -19,6 +19,7 @@ workspace "D7045E"
     IncludeDir["Glad"] = "Engine/vendor/Glad/include"
     IncludeDir["ImGui"] = "Engine/vendor/imgui"
     IncludeDir["glm"] = "Engine/vendor/glm"
+    IncludeDir["stb"] = "Engine/vendor/stb"
 
 group "Dependencies"
     include "Engine/vendor/GLFW"
@@ -78,6 +79,7 @@ project "Engine"
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}",
+        "%{IncludeDir.stb}",
         "%{prj.name}/src",
     }
 

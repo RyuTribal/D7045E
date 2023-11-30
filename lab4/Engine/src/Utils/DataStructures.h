@@ -9,50 +9,37 @@ namespace Engine
 
 	struct Vertex
 	{
-        float x, y, z;
-        float r = 1.0f;
-        float g = 1.0f;
-        float b = 1.0f;
-        float a = 1.0f;
+        glm::vec3 coordinates = { 0.f, 0.f, 0.f };
+        glm::vec4 color = { 1.f, 1.f, 1.f, 1.f };
+        glm::vec2 texture_coordinates = { 1.f, 1.f };
 
-		Vertex(float x, float y, float z) : x(x), y(y), z(z) {}
-		Vertex() : x(0.f), y(0.f), z(0.f) {} // A default constructor is always a good idea
-
-        void SetColor(int red, int green, int blue) 
-        {
-            r = static_cast<float>(red) / 255.f;
-            g = static_cast<float>(green) / 255.f;
-            b = static_cast<float>(blue) / 255.f;
-        }
-
-        void SetColor(float red, float green, float blue)
-        {
-            r = red;
-            g = green;
-            b = blue;
-        }
-
-        void SetOpacity(float alpha) { a = alpha; }
+		Vertex(glm::vec3 location, glm::vec4 color, glm::vec2 texture_coordinates) : coordinates(location), color(color), texture_coordinates(texture_coordinates) {}
+        Vertex(glm::vec3 location, glm::vec4 color) : coordinates(location), color(color) {}
+        Vertex(glm::vec3 location) : coordinates(location) {}
+        Vertex() = default;
 
         void TransformData(std::vector<float>& target_vector) {
-            target_vector.push_back(x);
-            target_vector.push_back(y);
-            target_vector.push_back(z);
+            target_vector.push_back(coordinates.x);
+            target_vector.push_back(coordinates.y);
+            target_vector.push_back(coordinates.z);
 
-            target_vector.push_back(r);
-            target_vector.push_back(g);
-            target_vector.push_back(b);
-            target_vector.push_back(a);
+            target_vector.push_back(color.r);
+            target_vector.push_back(color.g);
+            target_vector.push_back(color.b);
+            target_vector.push_back(color.a);
+
+            target_vector.push_back(texture_coordinates.x);
+            target_vector.push_back(texture_coordinates.y);
         }
 
         bool operator==(const Vertex& other) const {
-            return std::abs(x - other.x) < EPSILON &&
-                std::abs(y - other.y) < EPSILON &&
-                std::abs(z - other.z) < EPSILON;
+            return std::abs(coordinates.x - other.coordinates.x) < EPSILON &&
+                std::abs(coordinates.y - other.coordinates.y) < EPSILON &&
+                std::abs(coordinates.z - other.coordinates.z) < EPSILON;
         }
 
         static float DistanceBetweenTwoVerts(const Vertex& v1, const Vertex v2) {
-            return static_cast<float>(sqrt(pow(v2.x - v1.x, 2) + pow(v2.y - v1.y, 2) + pow(v2.z - v1.z, 2)));
+            return static_cast<float>(sqrt(pow(v2.coordinates.x - v1.coordinates.x, 2) + pow(v2.coordinates.y - v1.coordinates.y, 2) + pow(v2.coordinates.z - v1.coordinates.z, 2)));
         }
 	};
 
@@ -92,7 +79,7 @@ namespace Engine
         {
             for (Ref<Vertex>& vertex : *vertices) 
             {
-                vertex->SetColor(r, g, b);
+                vertex->color = glm::vec4((float)r/255, (float)g/255, (float)b/255, 1.f);
             }
         }
 
@@ -100,7 +87,7 @@ namespace Engine
         {
             for (Ref<Vertex>& vertex : *vertices)
             {
-                vertex->SetColor(r, g, b);
+                vertex->color = glm::vec4(r, g, b, 1.f);
             }
         }
 
@@ -108,7 +95,7 @@ namespace Engine
         {
             for (Ref<Vertex>& vertex : *vertices)
             {
-                vertex->SetOpacity(alpha);
+                vertex->color.a = alpha;
             }
         }
 
@@ -122,7 +109,7 @@ namespace Engine
         }
 
         static float TriangleArea(Ref<Vertex> A, Ref<Vertex> B, Ref<Vertex> C) {
-            return std::abs((A->x * (B->y - C->y) + B->x * (C->y - A->y) + C->x * (A->y - B->y)) / 2.0f);
+            return std::abs((A->coordinates.x * (B->coordinates.y - C->coordinates.y) + B->coordinates.x * (C->coordinates.y - A->coordinates.y) + C->coordinates.x * (A->coordinates.y - B->coordinates.y)) / 2.0f);
         }
 
         static bool IsPointInTriangle(Ref<Vertex> P, Ref<Triangle> triangle) {

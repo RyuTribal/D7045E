@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Monochrome.h"
+#include "Renderer/Renderer.h"
 #include <glad/gl.h>
 
 namespace Engine{
@@ -11,6 +12,7 @@ namespace Engine{
 	{
 		m_Program->Activate();
 
+		UploadVec3Data("u_CameraPos", Renderer::Get()->GetCamera()->GetPosition());
 		UploadVec3Data("u_MaterialColor", glm::vec3(r, g, b));
 	}
 }

@@ -1,0 +1,117 @@
+#include "pch.h"
+#include "Scene.h"
+#include "Components.h"
+#include "Entity.h"
+#include <glm/gtx/matrix_decompose.hpp>
+#include "Renderer/Renderer.h"
+
+namespace Engine {
+
+	Ref<Entity> Scene::CreateScene(std::string name)
+	{
+		UUID new_id = UUID();
+		return Entity();
+	}
+
+
+	Scene::Scene(EntityHandle* camera_handle, std::string name)
+		: m_Name(name), m_CurrentCamera(camera_handle->GetID())
+	{
+		entities[camera_handle->GetID()] = camera_handle;
+	}
+
+	Scene::~Scene() {
+		for (auto [key, entity] : entities) {
+			m_Registry.RemoveAllFromEntity(key);
+		}
+	}
+	Ref<Entity> Scene::CreateEntity(std::string name, Entity* parent) {
+		
+		UUID new_id = UUID();
+		m_RootSceneNode.AddChild(parent == nullptr ? m_ID : parent->GetID(), new_id);
+
+		m_Registry.Add<ParentIDComponent>(new_id, ParentIDComponent(parent == nullptr ? m_ID : parent->GetID()));
+		m_Registry.Add<WorldTransformComponent>(new_id, WorldTransformComponent());
+
+		Ref<Entity> new_entity = CreateRef<Entity>(new_id, name, this);
+
+		entities[new_id] = new_entity->GetHandle();
+
+		return new_entity;
+	}
+
+	void Scene::DestroyEntity(UUID id)
+	{
+		m_RootSceneNode.RemoveChild(id, &m_RootSceneNode);
+		m_Registry.RemoveAllFromEntity(id);
+		entities.erase(id);
+	}
+
+	void Scene::UpdateScene(int delta_time)
+	{
+		UpdateTransforms();
+		DrawSystem();
+	}
+
+	void Scene::UpdateWorldTransform(SceneNode* node, glm::mat4& parentWorldTransform)
+	{
+		if (!node) return;
+
+		auto localTransform = m_Registry.Get<LocalTransformComponent>(node->GetID());
+		glm::mat4 worldTransform = localTransform ? parentWorldTransform * localTransform->mat4() : parentWorldTransform;
+
+		auto worldTransformComponent = m_Registry.Get<WorldTransformComponent>(node->GetID());
+		if (worldTransformComponent) {
+			glm::vec3 scale;
+			glm::quat rotation;
+			glm::vec3 translation;
+			glm::vec3 skew;
+			glm::vec4 perspective;
+
+			glm::decompose(worldTransform, scale, rotation, translation, skew, perspective);
+
+			worldTransformComponent->translation = translation;
+			worldTransformComponent->rotation = glm::eulerAngles(rotation);
+			worldTransformComponent->scale = scale;
+		}
+
+		for (auto& child : *node->GetChildren()) {
+			UpdateWorldTransform(child.get(), worldTransform);
+		}
+	}
+
+	void Scene::UpdateCamera()
+	{
+		auto camera = m_Registry.Get<CameraComponent>(m_CurrentCamera)->camera;
+
+		glm::quat camera_orientation = camera->GetOrientation();
+		glm::vec3 camera_position = camera->GetPosition();
+
+
+	}
+
+	void Scene::UpdateTransforms()
+	{
+		glm::mat4 identityMatrix = glm::mat4(1.0f);
+
+		for (auto& child : *m_RootSceneNode.GetChildren()) {
+			UpdateWorldTransform(child.get(), identityMatrix);
+		}
+	}
+
+	void Scene::DrawSystem()
+	{
+		if (m_Registry.GetComponentRegistry<ObjectComponent>() != nullptr) {
+			for (const auto& [id, value] : *m_Registry.GetComponentRegistry<ObjectComponent>()) {
+				if (m_Registry.Get<WorldTransformComponent>(id) != nullptr) {
+					value.node->Draw(m_Registry.Get<WorldTransformComponent>(id)->mat4());
+				}
+				else {
+					value.node->Draw(glm::mat4(0.f)); // just a default one, adds no transform
+				}
+			}
+		}
+	}
+
+
+}

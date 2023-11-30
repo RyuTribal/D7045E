@@ -14,27 +14,46 @@ namespace Engine {
 		
 		Camera(CameraType type);
 
-		const glm::vec3& GetPosition() const { return m_Position; }
-		float GetRotation() const { return m_Rotation; }
+		const glm::vec3& GetPosition() const { return m_FocalPoint; }
+		float GetPitch() const { return m_Pitch; }
+		float GetYaw() const { return m_Yaw; }
+		float GetFar() { return m_Far; }
+		float GetFOVY() { return glm::degrees(m_PerspectiveFOVY); }
+
+		void SetPitch(float pitch) { m_Pitch = pitch; }
+		void SetYaw(float yaw) { m_Yaw = yaw; }
+		void SetFar(float far) { m_Far = far; }
+		 
+		glm::vec3 GetUpDirection() const;
+		glm::vec3 GetRightDirection() const;
+		glm::vec3 GetForwardDirection() const;
+		glm::quat GetOrientation() const;
 
 		const glm::mat4& GetProjection() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewProjection() const { return m_ViewProjectionMatrix; }
 		const glm::mat4& GetView() const { return m_ViewMatrix; }
 		const CameraType& GetType() const { return m_Type; }
+		float GetZoomDistance() { return m_Distance; }
+		float GetOrthographicSize() { return m_OrthographicSize; }
 
-		void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
-		void SetRotation(float rotation) { m_Rotation = rotation; RecalculateViewMatrix(); }
 		void SetOrthographicSize(float size);
 		void SetClippingRange(float near, float far);
+
+		void Rotate(const glm::vec2& delta, float rotation_speed, bool inverse_controls);
+		void Move(glm::vec3 velocity) { m_FocalPoint += velocity; };
 		/*
 		* In degrees
 		*/
 		void SetFovy(float fovy);
 		void SetAspectRatio(float ratio);
+		void SetZoomDistance(float distance) { m_Distance = distance; }
 
 		void ChangeCameraType(CameraType type);
+		void UpdateCamera() { RecalculateViewMatrix(); }
+
 	private:
 		void RecalculateViewMatrix();
+		glm::vec3 CalculatePosition() const;
 		void SetOrthographic();
 		void SetPerspective();
 	private:
@@ -42,8 +61,11 @@ namespace Engine {
 		glm::mat4 m_ViewMatrix{ 1.f };
 		glm::mat4 m_ViewProjectionMatrix{ 1.f };
 
-		glm::vec3 m_Position = glm::vec3(0.f, 0.f, 0.f);
-		float m_Rotation = 0.0f;
+		glm::vec3 m_Position = { 0.f, 0.f, 0.f };
+		glm::vec3 m_FocalPoint = { 0.0f, 0.0f, 0.0f };
+		float m_Yaw = 0.0f;
+		float m_Pitch = 0.0f;
+		float m_Distance = 1.0f;
 
 		float m_OrthographicSize = 1.f;
 
