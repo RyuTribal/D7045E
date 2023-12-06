@@ -1,8 +1,8 @@
 #pragma once
-#include "Renderer/Mesh.h"
+#include <Engine.h>
 
-namespace Engine {
-	class Cuboid : public Mesh {
+namespace Lab4 {
+	class Cuboid : public Engine::Mesh {
 	public:
 		Cuboid(float height, float width, float depth);
 

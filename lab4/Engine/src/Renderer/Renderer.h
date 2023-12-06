@@ -1,12 +1,29 @@
 #pragma once
-
-#include "GraphicsNode.h"
 #include "Camera.h"
+#include <glad/gl.h>
+#include "ShaderProgram.h"
+#include <Lights/PointLight.h>
+#include "Mesh.h"
+#include "Material.h"
+#include <Scene/Components.h>
 
 namespace Engine
 {
 
 	struct GLFWwindow;
+
+	struct PointLightInfo {
+		float constantAttenuation;
+		float linearAttenuation;
+		float quadraticAttenuation;
+		float intensity;
+		glm::vec4 color; // vec4 necessary for GLSL allignment
+		glm::vec4 position;
+	};
+
+	struct VisibleIndex {
+		int index;
+	};
 
 	struct TextureInfo {
 		GLuint texture;
@@ -15,15 +32,46 @@ namespace Engine
 		int channel_number;
 	};
 
+	struct Statistics {
+		double frames_per_second = 0.0;
+		double frame_time_accumulator = 0.0;
+		int frame_count = 0;
+		double last_FPS_calculation_time = 0.0;
+
+		void UpdateFPS(double currentTime, double frameTime) {
+			frame_time_accumulator += frameTime;
+			frame_count++;
+
+			if (currentTime - last_FPS_calculation_time >= 1.0) {
+				double avgFrameTime = frame_time_accumulator / frame_count;
+				frames_per_second = 1.0 / avgFrameTime;
+
+				frame_time_accumulator = 0.0;
+				frame_count = 0;
+				last_FPS_calculation_time = currentTime;
+			}
+		}
+	};
+
 	class Renderer
 	{
 	public:
 		Renderer();
 		~Renderer();
 
+		void SubmitObject(Mesh* mesh, Material* material) { m_Meshes.push_back(mesh); m_Materials.push_back(material); }
+		void SubmitPointLight(PointLight* point_light) { m_PointLights.push_back(point_light); }
+
 		void BeginFrame(Camera* camera);
 
+		void DepthPrePass();
+		void CullLights();
+		void ShadeAllObjects();
+		void DrawIndexed(Mesh* mesh, Material* material);
+
 		void EndFrame();
+
+		void BeginDrawing();
 
 		static void CreateRenderer()
 		{
@@ -40,13 +88,51 @@ namespace Engine
 
 		TextureInfo UploadImageToGPU(const char* path, bool invert);
 
+		Statistics* GetStats() { return &m_Stats; }
+
 
 	private:
+
+		void ResetStats();
+		void ReCreateFrameBuffers();
+		void UploadLightData();
+		void DrawHDRQuad();
 
 		static Renderer* s_Instance;
 		Camera* m_CurrentCamera;
 
+		GLuint m_WorkGroupsX;
+		GLuint m_WorkGroupsY;
+
+		GLuint m_LightsBuffer;
+		GLuint m_VisibleLightsBuffer;
+
+		GLuint m_DepthTexture;
+		GLuint m_DepthFBO;
+
+		GLuint m_HDRFBO;
+		GLuint m_ColorBuffer;
+		GLuint m_RBODepth;
+		ShaderProgram m_DepthPrePassProgram = ShaderProgram(std::string(ROOT_PATH) + "/shaders/forward_plus/depth_pre_pass");
+
+		ShaderProgram m_LightCullingProgram = ShaderProgram(std::string(ROOT_PATH) + "/shaders/forward_plus/light_culling_shader");
+
 		int m_BackgroundColor[3] = { 0, 0, 0 };
+
+		Statistics m_Stats{};
+		
+		float current_window_width, current_window_height;
+
+		std::vector<Mesh*> m_Meshes{};
+		std::vector<Material*> m_Materials{};
+		std::vector<PointLight*> m_PointLights{};
+
+		GLuint m_QuadVAO = 0;
+		GLuint m_QuadVBO;
+
+		ShaderProgram m_QuadProgram = ShaderProgram(std::string(ROOT_PATH) + "/shaders/forward_plus/hdr_shader");
+
+		const float exposure = 1.0f;
 	};
 
 	// This is so the spd log library can print this data structure

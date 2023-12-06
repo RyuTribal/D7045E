@@ -14,16 +14,12 @@ namespace Engine {
 		else if (m_Type == CameraType::PERSPECTIVE) {
 			SetPerspective();
 		}
-
-		RecalculateViewMatrix();
 	}
 	void Camera::SetOrthographicSize(float size)
 	{
 		m_OrthographicSize = size;
 		if (m_Type == CameraType::ORTHOGRAPHIC) {
 			SetOrthographic();
-
-			RecalculateViewMatrix();
 		}
 	}
 	void Camera::SetClippingRange(float near, float far)
@@ -36,7 +32,6 @@ namespace Engine {
 		else if (m_Type == CameraType::ORTHOGRAPHIC) {
 			SetOrthographic();
 		}
-		RecalculateViewMatrix();
 	}
 	void Camera::SetFovy(float fovy)
 	{
@@ -44,7 +39,6 @@ namespace Engine {
 
 		if (m_Type == CameraType::PERSPECTIVE) {
 			SetPerspective();
-			RecalculateViewMatrix();
 		}
 	}
 	void Camera::SetAspectRatio(float ratio)
@@ -53,19 +47,29 @@ namespace Engine {
 
 		if (m_Type == CameraType::PERSPECTIVE) {
 			SetPerspective();
-			RecalculateViewMatrix();
 		}
 		else if (m_Type == CameraType::ORTHOGRAPHIC) {
 			SetOrthographic();
-			RecalculateViewMatrix();
 		}
+	}
+	std::pair<float, float> Camera::GetDeltaOrientation(const glm::vec2& delta, float rotation_speed, bool inverse_controls)
+	{
+		float yawSign = GetUpDirection().y < 0 ? -1.0f : 1.0f;
+		float deltaYaw = yawSign * delta.x * rotation_speed;
+		float deltaPitch = delta.y * rotation_speed;
+
+		if (!inverse_controls) {
+			deltaYaw *= -1;
+			deltaPitch *= -1;
+		}
+
+		return { deltaPitch, deltaYaw };
 	}
 	void Camera::ChangeCameraType(CameraType type)
 	{
 		if (type != m_Type) {
 			m_Type = type;
 			m_Type == CameraType::ORTHOGRAPHIC ? SetOrthographic() : SetPerspective();
-			RecalculateViewMatrix();
 		}
 	}
 	void Camera::RecalculateViewMatrix()
@@ -77,8 +81,6 @@ namespace Engine {
 
 		m_ViewMatrix = glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
 		m_ViewMatrix = glm::inverse(m_ViewMatrix);
-
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 	void Camera::SetOrthographic()
 	{
@@ -95,17 +97,22 @@ namespace Engine {
 
 	void Camera::Rotate(const glm::vec2& delta, float rotation_speed, bool inverse_controls)
 	{
-		float yawSign = GetUpDirection().y < 0 ? -1.0f : 1.0f;
-		float deltaYaw = yawSign * delta.x * rotation_speed;
-		float deltaPitch = delta.y * rotation_speed;
-
-		if (!inverse_controls) {
-			deltaYaw *= -1;
-			deltaPitch *= -1;
-		}
+		auto [deltaPitch, deltaYaw] = GetDeltaOrientation(delta, rotation_speed, inverse_controls);
 
 		m_Yaw += deltaYaw;
 		m_Pitch += deltaPitch;
+	}
+
+	void Camera::RotateWithVector(glm::vec3& rotation)
+	{
+
+	}
+
+	void Camera::LookAt(glm::vec3& center)
+	{
+		glm::vec3 direction = glm::normalize(center - CalculatePosition());
+		m_Pitch = asin(direction.y);
+		m_Yaw = atan2(direction.x, -direction.z);
 	}
 
 	glm::vec3 Camera::GetUpDirection() const

@@ -1,8 +1,10 @@
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
-#include "Renderer/GraphicsNode.h"
 #include "Renderer/Camera.h"
+#include "Renderer/Material.h"
+#include "Renderer/Mesh.h"
+#include "Lights/PointLight.h"
 
 namespace Engine {
 
@@ -11,8 +13,11 @@ namespace Engine {
 		ParentID,
 		LocalTransform,
 		WorldTransform,
-		Object,
-		CameraComp
+		Transform,
+		CameraComp,
+		PointLightComp,
+		MeshComp,
+		MaterialComp
 	};
 
 	struct Component {
@@ -87,21 +92,48 @@ namespace Engine {
 		}
 	};
 
-	struct ObjectComponent : public Component {
-		Ref<GraphicsNode> node;
+	struct TransformComponent : public Component {
+		WorldTransformComponent world_transform{};
+		LocalTransformComponent local_transform{};
 
-		ObjectComponent() = default;
-		ObjectComponent(const ObjectComponent&) = default;
-		ObjectComponent(Ref<GraphicsNode> new_node) : node(new_node) {}
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent&) = default;
+		TransformComponent(glm::vec3& new_translation) : local_transform(new_translation) {}
 
 		const ComponentType Type() const override {
-			return ComponentType::Object;
+			return ComponentType::Transform;
+		}
+	};
+
+	struct MeshComponent : public Component {
+		Ref<Mesh> mesh;
+
+		MeshComponent() = default;
+		MeshComponent(const MeshComponent&) = default;
+		MeshComponent(Ref<Mesh> new_mesh) : mesh(new_mesh) {}
+
+		const ComponentType Type() const override {
+			return ComponentType::MeshComp;
+		}
+	};
+
+	struct MaterialComponent : public Component {
+		Ref<Material> material;
+
+		MaterialComponent() = default;
+		MaterialComponent(const MaterialComponent&) = default;
+		MaterialComponent(Ref<Material> new_material) : material(new_material) {}
+
+		const ComponentType Type() const override {
+			return ComponentType::MaterialComp;
 		}
 	};
 
 
 	struct CameraComponent : public Component {
 		Ref<Camera> camera;
+		// Will conform to the entity's local transform rotation instead of it's own
+		bool lock_camera = true;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
@@ -109,6 +141,18 @@ namespace Engine {
 
 		const ComponentType Type() const override {
 			return ComponentType::CameraComp;
+		}
+	};
+
+	struct PointLightComponent : public Component {
+		Ref<PointLight> light;
+
+		PointLightComponent() = default;
+		PointLightComponent(const PointLightComponent&) = default;
+		PointLightComponent(Ref<PointLight> new_light) : light(new_light) {}
+
+		const ComponentType Type() const override {
+			return ComponentType::PointLightComp;
 		}
 	};
 

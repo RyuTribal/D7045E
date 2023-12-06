@@ -131,11 +131,9 @@ namespace Lab4 {
 
 	void CameraLayer::UpdateMovement() {
 		auto camera = scene->GetCurrentCamera();
-		auto camera_transform = camera_entity->GetComponent<Engine::LocalTransformComponent>();
 
 		if (mouseIsPressed) {
-
-			camera->Rotate(deltaMouseOrientation * smoothedDeltaTime, sensitivity, false);
+			camera->Rotate(deltaMouseOrientation*smoothedDeltaTime, sensitivity, false);
 			deltaMouseOrientation = { 0.f, 0.f };
 		}
 

@@ -4,6 +4,15 @@
 
 namespace Lab4 {
 
+	struct MazeNode {
+		bool left_wall;
+		bool right_wall;
+		bool up_wall;
+		bool down_wall;
+
+		MazeNode(bool left, bool right, bool up, bool down) : left_wall(left), right_wall(right), up_wall(up), down_wall(down){}
+	};
+
 	class RandomObjectsLayer : public Engine::Layer {
 	public:
 		RandomObjectsLayer(Engine::Ref<Engine::Scene> scene, Engine::Ref<Engine::Entity> camera_entity) : Layer("RandomObjects"), scene(scene) {
@@ -20,17 +29,13 @@ namespace Lab4 {
 		void DisplaySceneNode(Engine::SceneNode* node);
 		void DisplayComponents(Engine::UUID entity_id);
 		void DisplayDetails();
+		void CreateWall(Engine::TransformComponent new_transform, Engine::Entity* maze_entity, std::string& name);
+		void CreateRobot();
 
 	private:
 
 		Engine::Ref<Engine::Scene> scene;
 		std::unordered_map <Engine::UUID, Engine::Ref<Engine::Entity>> entities{};
-		bool isOrthographic = false;
-
-		const int random_object_count = 7;
-
-		ImVec4 plusColor = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-		ImVec4 minusColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 
 		Engine::UUID child_tree_node_id = Engine::UUID();
 
@@ -41,5 +46,9 @@ namespace Lab4 {
 		std::pair<Engine::UUID, Engine::ComponentType> currently_selected;
 
 		std::unordered_map<std::string, Engine::TextureInfo> texture_library;
+
+		Engine::Ref<Engine::Entity> m_HeadEntity;
+		Engine::Ref<Engine::Entity> m_StarEntity;
+		float animationTime = 0.f;
 	};
 }

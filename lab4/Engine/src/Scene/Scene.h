@@ -29,7 +29,12 @@ namespace Engine {
 
 		bool RemoveChild(UUID entity_id, SceneNode* parent) {
 			if (m_ID == entity_id) {
-				parent->SetChildren(std::move(children));
+				parent->AddChildren(std::move(children));
+				for (size_t i = 0; i < parent->GetChildren()->size(); i++) {
+					if (parent->GetChildren()->at(i)->GetID() == entity_id) {
+						parent->GetChildren()->erase(parent->GetChildren()->begin() + i);
+					}
+				}
 				return true;
 			}
 			else {
@@ -44,6 +49,12 @@ namespace Engine {
 
 		void SetChildren(std::vector<Scope<SceneNode>> new_children) {
 			children = std::move(new_children);
+		}
+
+		void AddChildren(std::vector<Scope<SceneNode>> new_children) {
+			for (auto &child : new_children) {
+				children.push_back(std::move(child));
+			}
 		}
 
 		UUID GetID() { return m_ID; }
@@ -64,6 +75,7 @@ namespace Engine {
 
 		Ref<Entity> CreateEntity(std::string name, Entity* parent);
 		void DestroyEntity(UUID id);
+		void ReparentSceneNode(UUID id, UUID new_parent_id);
 
 		Camera* GetCurrentCamera();
 
@@ -80,10 +92,11 @@ namespace Engine {
 		EntityHandle* GetEntity(UUID id) { return entities[id]; }
 
 	private:
+
+		void FindNodeAndParent(SceneNode* current, UUID id, SceneNode** node, SceneNode** parent);
+
 		void UpdateWorldTransform(SceneNode* node, glm::mat4& parentWorldTransform);
 		void UpdateTransforms();
-
-		void UpdateCamera();
 		void DrawSystem();
 
 	private:

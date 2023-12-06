@@ -38,9 +38,13 @@ namespace Engine {
 
 		void SetOrthographicSize(float size);
 		void SetClippingRange(float near, float far);
+		void SetView(glm::mat4& view_matrix) { m_ViewMatrix = view_matrix; }
+		void SetPosition(glm::vec3 translation) { m_FocalPoint = translation; }
 
 		void Rotate(const glm::vec2& delta, float rotation_speed, bool inverse_controls);
-		void Move(glm::vec3 velocity) { m_FocalPoint += velocity; };
+		void RotateWithVector(glm::vec3& rotation);
+		void Move(glm::vec3& velocity) { m_FocalPoint += velocity; };
+		void LookAt(glm::vec3& center);
 		/*
 		* In degrees
 		*/
@@ -48,12 +52,14 @@ namespace Engine {
 		void SetAspectRatio(float ratio);
 		void SetZoomDistance(float distance) { m_Distance = distance; }
 
+		std::pair<float, float> GetDeltaOrientation(const glm::vec2& delta, float rotation_speed, bool inverse_controls);
+
 		void ChangeCameraType(CameraType type);
 		void UpdateCamera() { RecalculateViewMatrix(); }
+		glm::vec3 CalculatePosition() const;
 
 	private:
 		void RecalculateViewMatrix();
-		glm::vec3 CalculatePosition() const;
 		void SetOrthographic();
 		void SetPerspective();
 	private:

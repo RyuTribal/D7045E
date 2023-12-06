@@ -12,7 +12,9 @@ namespace Engine
         glm::vec3 coordinates = { 0.f, 0.f, 0.f };
         glm::vec4 color = { 1.f, 1.f, 1.f, 1.f };
         glm::vec2 texture_coordinates = { 1.f, 1.f };
+        glm::vec3 normal = { 0.0f, 0.0f, 0.0f };
 
+        Vertex(glm::vec3 location, glm::vec4 color, glm::vec2 texture_coordinates, glm::vec3 normals) : coordinates(location), color(color), texture_coordinates(texture_coordinates), normal(normals) {}
 		Vertex(glm::vec3 location, glm::vec4 color, glm::vec2 texture_coordinates) : coordinates(location), color(color), texture_coordinates(texture_coordinates) {}
         Vertex(glm::vec3 location, glm::vec4 color) : coordinates(location), color(color) {}
         Vertex(glm::vec3 location) : coordinates(location) {}
@@ -30,6 +32,10 @@ namespace Engine
 
             target_vector.push_back(texture_coordinates.x);
             target_vector.push_back(texture_coordinates.y);
+
+            target_vector.push_back(normal.x);
+            target_vector.push_back(normal.y);
+            target_vector.push_back(normal.z);
         }
 
         bool operator==(const Vertex& other) const {

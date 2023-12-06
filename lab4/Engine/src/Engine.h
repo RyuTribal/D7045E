@@ -11,9 +11,8 @@
 
 // ------------- Renderer ----------------
 #include "Renderer/Renderer.h"
-#include "Primitives/Cuboid.h"
-#include "Materials/Monochrome.h"
-#include "Materials/Texture.h"
+#include "Materials/Phong.h"
+#include "Lights/PointLight.h"
 
 
 // ---------------- Scene ----------------
