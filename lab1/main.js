@@ -329,17 +329,41 @@ function handleCollision() {
       );
 
       // Overlap correction
+      // const dx = other.x - circleA.x;
+      // const dy = other.y - circleA.y;
+      // const distance = Math.sqrt(dx * dx + dy * dy) || 0.001;
+      // const overlap = (circleA.size + other.size) / 2 - distance;
+      // const correctionX = (dx / distance) * overlap;
+      // const correctionY = (dy / distance) * overlap;
+
+      // circleA.x -= correctionX * 0.5;
+      // circleA.y -= correctionY * 0.5;
+      // other.x += correctionX * 0.5;
+      // other.y += correctionY * 0.5; // fix exact overlapp correction
+
+      // Overlap correction
       const dx = other.x - circleA.x;
       const dy = other.y - circleA.y;
-      const distance = Math.sqrt(dx * dx + dy * dy) || 0.001;
-      const overlap = (circleA.size + other.size) / 2 - distance;
-      const correctionX = (dx / distance) * overlap;
-      const correctionY = (dy / distance) * overlap;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const radiusSum = (circleA.size / 2) + (other.size / 2);
 
-      circleA.x -= correctionX * 0.5;
-      circleA.y -= correctionY * 0.5;
-      other.x += correctionX * 0.5;
-      other.y += correctionY * 0.5; // fix exact overlapp correction
+      if (distance < radiusSum) {
+          // Calculate the penetration depth
+          const p = radiusSum - distance;
+          
+          // Normalize the distance vector
+          const nx = dx / distance;
+          const ny = dy / distance;
+
+          // Correct positions based on penetration depth
+          const correctionX = nx * p;
+          const correctionY = ny * p;
+
+          circleA.x -= correctionX * 0.5;
+          circleA.y -= correctionY * 0.5;
+          other.x += correctionX * 0.5;
+          other.y += correctionY * 0.5;
+      }
 
       // Update velocities
       pointVelocities[2 * i] = velocities.v1_prime_x;
