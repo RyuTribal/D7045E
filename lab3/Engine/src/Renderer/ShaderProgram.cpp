@@ -2,7 +2,7 @@
 #include "ShaderProgram.h"
 
 namespace Engine {
-	ShaderProgram::ShaderProgram(std::string& path) : m_VertexShader(Shader(path + ".vert", GL_VERTEX_SHADER)), m_FragmentShader(Shader(path + ".frag", GL_FRAGMENT_SHADER))
+	ShaderProgram::ShaderProgram(const std::string& path) : m_VertexShader(Shader(path + ".vert", GL_VERTEX_SHADER)), m_FragmentShader(Shader(path + ".frag", GL_FRAGMENT_SHADER))
 	{
         m_ShaderProgram = glCreateProgram();
         glAttachShader(m_ShaderProgram, m_VertexShader.Handle());

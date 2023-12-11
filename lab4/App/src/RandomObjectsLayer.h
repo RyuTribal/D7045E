@@ -29,7 +29,7 @@ namespace Lab4 {
 		void DisplaySceneNode(Engine::SceneNode* node);
 		void DisplayComponents(Engine::UUID entity_id);
 		void DisplayDetails();
-		void CreateWall(Engine::TransformComponent new_transform, Engine::Entity* maze_entity, std::string& name);
+		void CreateWall(Engine::TransformComponent new_transform, Engine::Entity* maze_entity, const std::string& name);
 		void CreateRobot();
 
 	private:

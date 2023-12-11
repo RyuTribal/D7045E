@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "LinuxWindow.h"
 
-#include "Core/RenderContext.h"
+#include "Renderer/RenderContext.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 #include "glad/gl.h"
 
-namespace D7045E
+namespace Engine
 {
 	static bool s_GLFWInitialized = false;
 

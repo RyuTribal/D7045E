@@ -19,7 +19,6 @@ workspace "D7045E"
     IncludeDir["Glad"] = "Engine/vendor/Glad/include"
     IncludeDir["ImGui"] = "Engine/vendor/imgui"
     IncludeDir["glm"] = "Engine/vendor/glm"
-    IncludeDir["stb"] = "Engine/vendor/stb"
 
 group "Dependencies"
     include "Engine/vendor/GLFW"
@@ -54,11 +53,6 @@ project "Engine"
         "%{prj.name}/src/Platform/**"
     }
 
-    libdirs
-    {
-        "%{prj.name}/vendor/GLFW/lib-vc2022",
-    }
-
     links
     {
         "GLFW",
@@ -75,11 +69,11 @@ project "Engine"
     includedirs
     {
         "%{prj.name}/vendor/spdlog/include",
+        "%{prj.name}/vendor/stb",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}",
-        "%{IncludeDir.stb}",
         "%{prj.name}/src",
     }
 
@@ -90,6 +84,12 @@ project "Engine"
             "PLATFORM_WINDOWS",
             "BUILD_DLL",
             "GLFW_INCLUDE_NONE"
+        }
+
+        libdirs
+        {
+            "%{prj.name}/vendor/GLFW/lib-vc2022",
+            
         }
         
         links 
@@ -120,8 +120,6 @@ project "Engine"
             "%{prj.name}/src/Platform/Linux/**.cpp",
             "%{prj.name}/src/Platform/Linux/**.h",
         }
-
-        buildoptions { "-msse2" }
 
     filter "configurations:Debug"
         defines "DEBUG"
@@ -182,6 +180,8 @@ project "App"
         defines
         {
             "PLATFORM_WINDOWS",
+            "BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
         links 
         {
@@ -193,14 +193,14 @@ project "App"
         defines
         {
             "PLATFORM_LINUX",
+            "BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
             
         }
         links 
         {
             "GL"
         }
-
-        buildoptions { "-msse2" }
 
     filter "configurations:Debug"
         defines "DEBUG"

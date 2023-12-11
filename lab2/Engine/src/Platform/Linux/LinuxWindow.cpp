@@ -7,7 +7,7 @@
 #include "Events/MouseEvent.h"
 #include "glad/gl.h"
 
-namespace D7045E
+namespace Engine
 {
 	static bool s_GLFWInitialized = false;
 

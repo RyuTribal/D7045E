@@ -339,7 +339,7 @@ function handleCollision() {
       circleA.x -= correctionX * 0.5;
       circleA.y -= correctionY * 0.5;
       other.x += correctionX * 0.5;
-      other.y += correctionY * 0.5;
+      other.y += correctionY * 0.5; // fix exact overlapp correction
 
       // Update velocities
       pointVelocities[2 * i] = velocities.v1_prime_x;

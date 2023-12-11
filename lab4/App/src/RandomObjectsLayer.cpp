@@ -217,7 +217,7 @@ namespace Lab4 {
 
 	}
 
-	void RandomObjectsLayer::CreateWall(Engine::TransformComponent new_transform, Engine::Entity* maze_entity, std::string& name) {
+	void RandomObjectsLayer::CreateWall(Engine::TransformComponent new_transform, Engine::Entity* maze_entity, const std::string& name) {
 		
 		Engine::Ref<Engine::Entity> maze_wall = scene->CreateEntity(name, maze_entity);
 		// Add other components (Mesh, Material) to the wall entity

@@ -3,7 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Engine {
-	ShaderProgram::ShaderProgram(std::string& path)
+	ShaderProgram::ShaderProgram(const std::string& path)
 	{
         m_ShaderProgram = glCreateProgram();
         

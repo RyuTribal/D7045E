@@ -53,11 +53,6 @@ project "Engine"
         "%{prj.name}/src/Platform/**"
     }
 
-    libdirs
-    {
-        "%{prj.name}/vendor/GLFW/lib-vc2022",
-    }
-
     links
     {
         "GLFW",
@@ -88,6 +83,12 @@ project "Engine"
             "PLATFORM_WINDOWS",
             "BUILD_DLL",
             "GLFW_INCLUDE_NONE"
+        }
+
+        libdirs
+        {
+            "%{prj.name}/vendor/GLFW/lib-vc2022",
+            
         }
         
         links 
@@ -163,7 +164,9 @@ project "App"
     links
     {
         "Engine",
-        "Glad"
+        "GLFW",
+        "Glad",
+        "ImGui",
     }
 
     defines
@@ -176,6 +179,8 @@ project "App"
         defines
         {
             "PLATFORM_WINDOWS",
+            "BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
         links 
         {
@@ -187,6 +192,8 @@ project "App"
         defines
         {
             "PLATFORM_LINUX",
+            "BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
             
         }
         links 

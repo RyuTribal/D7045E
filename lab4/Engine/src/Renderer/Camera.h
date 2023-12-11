@@ -43,7 +43,7 @@ namespace Engine {
 
 		void Rotate(const glm::vec2& delta, float rotation_speed, bool inverse_controls);
 		void RotateWithVector(glm::vec3& rotation);
-		void Move(glm::vec3& velocity) { m_FocalPoint += velocity; };
+		void Move(const glm::vec3& velocity) { m_FocalPoint += velocity; };
 		void LookAt(glm::vec3& center);
 		/*
 		* In degrees

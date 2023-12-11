@@ -55,7 +55,7 @@ namespace Engine {
 
 		LocalTransformComponent() = default;
 		LocalTransformComponent(const LocalTransformComponent&) = default;
-		LocalTransformComponent(glm::vec3& new_translation) : translation(new_translation) {}
+		LocalTransformComponent(const glm::vec3& new_translation) : translation(new_translation) {}
 
 		glm::mat4 mat4() {
 			glm::mat4 Rotation = glm::toMat4(glm::quat(rotation));
@@ -77,7 +77,7 @@ namespace Engine {
 
 		WorldTransformComponent() = default;
 		WorldTransformComponent(const WorldTransformComponent&) = default;
-		WorldTransformComponent(glm::vec3& new_translation) : translation(new_translation) {}
+		WorldTransformComponent(const glm::vec3& new_translation) : translation(new_translation) {}
 
 		glm::mat4 mat4() {
 			glm::mat4 Rotation = glm::toMat4(glm::quat(rotation));
@@ -98,7 +98,7 @@ namespace Engine {
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(glm::vec3& new_translation) : local_transform(new_translation) {}
+		TransformComponent(const glm::vec3& new_translation) : local_transform(new_translation) {}
 
 		const ComponentType Type() const override {
 			return ComponentType::Transform;

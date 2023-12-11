@@ -15,10 +15,10 @@ namespace Engine {
 		glm::vec3& GetSpecular() { return m_Specular; }
 		float GetShininess() { return m_Shininess; }
 
-		void SetDiffuse(glm::vec3& diffuse) { m_Diffuse = diffuse; }
-		void SetAmbient(glm::vec3& ambient) { m_Ambient = ambient; }
-		void SetSpecular(glm::vec3& specular) { m_Specular = specular; }
-		void SetShininess(float shininess) { m_Shininess = shininess; }
+		void SetDiffuse(const glm::vec3& diffuse) { m_Diffuse = diffuse; }
+		void SetAmbient(const glm::vec3& ambient) { m_Ambient = ambient; }
+		void SetSpecular(const glm::vec3& specular) { m_Specular = specular; }
+		void SetShininess(const float shininess) { m_Shininess = shininess; }
 
 	private:
 		std::string c_Name = "Phong";

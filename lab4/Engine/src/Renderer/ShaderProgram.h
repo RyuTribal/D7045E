@@ -4,7 +4,7 @@
 namespace Engine {
 	class ShaderProgram {
 	public:
-		ShaderProgram(std::string& path);
+		ShaderProgram(const std::string& path);
 		~ShaderProgram();
 		GLuint GetProgram() { return m_ShaderProgram; }
 

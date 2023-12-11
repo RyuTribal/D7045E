@@ -4,7 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace D7045E
+namespace Engine
 {
 	Input *Input::s_Instance = new LinuxInput();
 

@@ -4,12 +4,12 @@ namespace Engine {
 	class PointLight {
 	public:
 		PointLight() = default;
-		PointLight(glm::vec3 color) { SetColor(color); };
+		PointLight(const glm::vec3 color) { SetColor(color); };
 		~PointLight() = default;
 
 		glm::vec3& GetColor() { return m_Color; }
 
-		void SetColor(glm::vec3& color) { m_Color = color;}
+		void SetColor(const glm::vec3& color) { m_Color = color;}
 
 		glm::vec3& GetPosition() { return m_Position; }
 		float GetConstantAttenuation() { return m_ConstantAttenuation; }
@@ -17,7 +17,7 @@ namespace Engine {
 		float GetQuadraticAttenuation() { return m_QuadraticAttenuation; }
 		float GetIntensity() { return m_Intensity; }
 
-		void SetPosition(glm::vec3& position) { m_Position = position; }
+		void SetPosition(const glm::vec3& position) { m_Position = position; }
 		void SetConstantAttenuation(float attenuation) { m_ConstantAttenuation = attenuation; }
 		void SetLinearAttenuation(float attenuation) { m_LinearAttenuation = attenuation; }
 		void SetQuadraticAttenuation(float attenuation) { m_QuadraticAttenuation = attenuation; }
