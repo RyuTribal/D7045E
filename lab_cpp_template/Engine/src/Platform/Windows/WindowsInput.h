@@ -7,6 +7,7 @@ namespace Engine
 	{
 	protected:
 		bool IsKeyPressedImpl(int keycode) override;
+		void SetLockMouseModeImpl(bool lock_mouse) override;
 		bool IsMouseButtonPressedImpl(int button) override;
 		float GetMouseXImpl() override;
 		float GetMouseYImpl() override;

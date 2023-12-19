@@ -9,9 +9,6 @@ namespace Engine {
 
 		Ref<ShaderProgram> GetProgram() { return m_Program; }
 
-		void UploadMat4Data(const std::string& name, const glm::mat4& matrix);
-		void UploadVec3Data(const std::string& name, const glm::vec3& vector);
-
 	protected:
 		Ref<ShaderProgram> m_Program;
 	};

@@ -344,26 +344,27 @@ function handleCollision() {
       // Overlap correction
       const dx = other.x - circleA.x;
       const dy = other.y - circleA.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+      const dvx = velocities.v1_prime_x - velocities.v2_prime_x;
+      const dvy = velocities.v1_prime_y - velocities.v2_prime_y;
       const radiusSum = (circleA.size / 2) + (other.size / 2);
 
-      if (distance < radiusSum) {
-          // Calculate the penetration depth
-          const p = radiusSum - distance;
-          
-          // Normalize the distance vector
-          const nx = dx / distance;
-          const ny = dy / distance;
+      const p1 = (-(dx*dvx + dy*dvy) + Math.sqrt(2*dx*dvx*dy*dvy - Math.pow(dx, 2)*Math.pow(dvy,2) - Math.pow(dy, 2)*Math.pow(dvx,2)+Math.pow(radiusSum, 2)*Math.pow(dvx,2) + Math.pow(radiusSum, 2)*Math.pow(dvy,2)))/(Math.pow(dvx, 2) + Math.pow(dvy , 2));
+      const p2 = (-(dx*dvx + dy*dvy) - Math.sqrt(2*dx*dvx*dy*dvy - Math.pow(dx, 2)*Math.pow(dvy,2) - Math.pow(dy, 2)*Math.pow(dvx,2)+Math.pow(radiusSum, 2)*Math.pow(dvx,2) + Math.pow(radiusSum, 2)*Math.pow(dvy,2)))/(Math.pow(dvx, 2) + Math.pow(dvy , 2));
+      
+      const smallest_p = Math.min(p1, p2);
 
-          // Correct positions based on penetration depth
-          const correctionX = nx * p;
-          const correctionY = ny * p;
+      if (!isNaN(smallest_p)) {
+          const correctionX_A = velocities.v1_prime_x * smallest_p;
+          const correctionY_A = velocities.v1_prime_y * smallest_p;
+          const correctionX_other = velocities.v2_prime_x * smallest_p;
+          const correctionY_other = velocities.v2_prime_y * smallest_p;
 
-          circleA.x -= correctionX * 0.5;
-          circleA.y -= correctionY * 0.5;
-          other.x += correctionX * 0.5;
-          other.y += correctionY * 0.5;
+          circleA.x -= correctionX_A;
+          circleA.y -= correctionY_A;
+          other.x -= correctionX_other;
+          other.y -= correctionY_other;
       }
+
 
       // Update velocities
       pointVelocities[2 * i] = velocities.v1_prime_x;

@@ -38,6 +38,8 @@
 #include "Utils/Algorithms.h"
 #include "Utils/Paths.h"
 
+#include "Core/UUID.h"
+
 #include "Core.h"
 
 #ifdef PLATFORM_WINDOWS

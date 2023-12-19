@@ -61,13 +61,12 @@ namespace Engine
 			auto newTime = std::chrono::high_resolution_clock::now();
 			float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - last_frame).count();
 			last_frame = newTime;
-
-			Renderer::Get()->BeginFrame();
+			double currentTime = std::chrono::duration<double>(newTime.time_since_epoch()).count();
+			Renderer::Get()->GetStats()->UpdateFPS(currentTime, frameTime);
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate(frameTime);
 			}
-			Renderer::Get()->EndFrame();
 
 
 			m_ImGuiLayer->Begin();

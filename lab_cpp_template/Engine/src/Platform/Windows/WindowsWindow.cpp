@@ -62,8 +62,6 @@ namespace Engine
 				data.Height = height;
 				WindowResizeEvent event(width, height);
 				data.EventCallback(event);
-
-
 			});
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 			{
