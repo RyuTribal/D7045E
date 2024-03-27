@@ -36,6 +36,7 @@ namespace Engine
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
+		m_Data.VSync = false;
 
 		CORE_INFO("Creating window  {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
@@ -51,7 +52,7 @@ namespace Engine
 		m_Context = RenderContext::Create(m_Window);
 		m_Context->Init();
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		glfwSwapInterval(1);
+		glfwSwapInterval(m_Data.VSync);
 
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)

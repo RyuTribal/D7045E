@@ -30,6 +30,6 @@ namespace Engine {
 		float m_QuadraticAttenuation = 1.8f;
 
 		glm::vec3 m_Color = { 1.f, 1.f, 1.f };
-		float m_Intensity = 5.f;
+		float m_Intensity = 1.f;
 	};
 }

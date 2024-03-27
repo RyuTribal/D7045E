@@ -65,6 +65,7 @@ namespace Engine
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, m_LightsBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, m_VisibleLightsBuffer);
 		glDispatchCompute(m_WorkGroupsX, m_WorkGroupsY, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glActiveTexture(GL_TEXTURE4);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
@@ -83,7 +84,9 @@ namespace Engine
 		for (size_t i = 0; i < m_Meshes.size(); i++) {
 			DrawIndexed(m_Meshes[i], m_Materials[i]);
 		}
-		 glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		m_QuadProgram.Activate();
